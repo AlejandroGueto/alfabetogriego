@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de Atenas | La Odisea del Alfabeto Griego</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           1. VARIABLES Y RESET
+           ========================================================================== */
+        :root {
+            --aegean-blue: #0f2c59;
+            --obsidian: #1a1a1a;
+            --marble: #f4f4f6;
+            --gold-primary: #dac0a3;
+            --gold-bright: #f8c973;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--marble);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .text-center { text-align: center; }
+        .hidden { display: none !important; }
+
+        /* ==========================================================================
+           2. NAVEGACIÓN Y HERO SECTION
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 44, 89, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 4rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            color: var(--gold-bright);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-bright);
+        }
+
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1606775985860-98d63a830113?q=80&w=2000') center/cover fixed;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(15, 44, 89, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--text-light);
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 4.5rem;
+            color: var(--gold-bright);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        /* BOTONES */
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 5px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-gold { background: var(--gold-bright); color: var(--obsidian); }
+        .btn-gold:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(248, 201, 115, 0.4); }
+        .btn-outline { background: transparent; color: var(--gold-bright); border: 2px solid var(--gold-bright); }
+        .btn-outline:hover { background: var(--gold-bright); color: var(--obsidian); }
+        .btn-blue { background: var(--aegean-blue); color: white; }
+        .btn-blue:hover { background: #1a4282; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: var(--obsidian); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        /* ==========================================================================
+           3. ESTRUCTURA DE SECCIONES
+           ========================================================================== */
+        .section-dark { background-color: var(--obsidian); color: var(--text-light); padding: 6rem 0; }
+        .section-light { background-color: var(--marble); color: var(--text-dark); padding: 6rem 0; }
+        .section-title { font-family: var(--font-heading); font-size: 3rem; text-align: center; color: var(--gold-primary); margin-bottom: 1rem; }
+        .section-desc { text-align: center; font-size: 1.1rem; max-width: 700px; margin: 0 auto 4rem auto; opacity: 0.8; }
+
+        /* CONTENEDOR GENIALLY */
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border: 2px solid var(--gold-primary);
+        }
+        .iframe-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        /* GRID DEL ALFABETO */
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .alpha-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(218, 192, 163, 0.2);
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        .alpha-card:hover {
+            transform: translateY(-10px);
+            background: rgba(218, 192, 163, 0.1);
+            border-color: var(--gold-bright);
+        }
+        .alpha-symbol {
+            font-size: 4rem;
+            font-family: 'Times New Roman', serif;
+            color: var(--gold-bright);
+            margin-bottom: 0.5rem;
+        }
+        .alpha-name { font-weight: bold; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+        .alpha-detail { font-size: 0.85rem; margin-top: 0.5rem; color: #aaa; }
+
+        /* ==========================================================================
+           4. FLASHCARDS
+           ========================================================================== */
+        .flashcard-container { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+        .flashcard { width: 350px; height: 450px; perspective: 1000px; cursor: pointer; }
+        .flashcard-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); padding: 2rem;
+        }
+        .flashcard-front {
+            background: var(--aegean-blue); color: var(--gold-bright);
+            font-size: 8rem; font-family: 'Times New Roman', serif; border: 4px solid var(--gold-primary);
+        }
+        .flashcard-back {
+            background: white; color: var(--aegean-blue); transform: rotateY(180deg);
+            font-size: 2rem; font-weight: bold; border: 4px solid var(--aegean-blue);
+        }
+        .flashcard-back p { font-size: 1rem; font-weight: normal; margin-top: 1rem; color: #555; }
+        .flashcard-controls { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+        /* ==========================================================================
+           5. TRIVIAL (EL ORÁCULO)
+           ========================================================================== */
+        .game-panel {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .game-header {
+            display: flex; justify-content: space-between; margin-bottom: 2rem;
+            font-family: var(--font-heading); font-size: 1.2rem; color: var(--gold-bright);
+            border-bottom: 1px solid rgba(218, 192, 163, 0.3); padding-bottom: 1rem;
+        }
+        .question-container h3 { font-size: 1.8rem; margin-bottom: 2.5rem; text-align: center; line-height: 1.4; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .opt-btn {
+            background: rgba(255,255,255,0.1); color: white; border: 2px solid var(--aegean-blue);
+            padding: 1.5rem; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .opt-btn:hover:not(:disabled) { background: var(--aegean-blue); border-color: var(--gold-bright); transform: scale(1.02); }
+        .opt-btn.correct { background: var(--success) !important; border-color: #27ae60 !important; color: white !important; }
+        .opt-btn.wrong { background: var(--danger) !important; border-color: #c0392b !important; color: white !important; }
+
+        /* ==========================================================================
+           6. PASAPALABRA (EL ROSCO OLÍMPICO)
+           ========================================================================== */
+        .rosco-layout { display: flex; align-items: center; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+        .rosco-ring-container { position: relative; width: 450px; height: 450px; border-radius: 50%; }
+        .rosco-letter {
+            position: absolute; width: 42px; height: 42px; border-radius: 50%;
+            background: var(--aegean-blue); color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-family: var(--font-heading); font-size: 1.2rem;
+            transform: translate(-50%, -50%); transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid rgba(255,255,255,0.2);
+        }
+        .rosco-letter.active {
+            transform: translate(-50%, -50%) scale(1.6);
+            background: var(--gold-bright); color: var(--obsidian);
+            border-color: var(--obsidian); z-index: 10;
+            box-shadow: 0 0 20px rgba(248, 201, 115, 0.8);
+        }
+        .rosco-letter.correct { background: var(--success); border-color: #fff; }
+        .rosco-letter.wrong { background: var(--danger); border-color: #fff; }
+
+        .rosco-interface {
+            background: white; padding: 3rem; border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); width: 100%; max-width: 450px;
+            text-align: center; border-top: 5px solid var(--aegean-blue);
+        }
+        .rosco-current-letter { font-size: 4rem; font-family: var(--font-heading); color: var(--aegean-blue); line-height: 1; margin-bottom: 1rem; text-transform: uppercase; }
+        .rosco-hint { font-size: 1.1rem; min-height: 80px; margin-bottom: 1.5rem; color: #555; }
+        .rosco-input-group input {
+            width: 100%; padding: 1.2rem; font-size: 1.2rem; border: 2px solid #ddd;
+            border-radius: 8px; margin-bottom: 1.5rem; text-align: center;
+            font-family: var(--font-body); transition: border-color 0.3s;
+        }
+        .rosco-input-group input:focus { outline: none; border-color: var(--aegean-blue); }
+        .rosco-actions { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+        .rosco-stats { display: flex; justify-content: center; gap: 2rem; font-size: 1.5rem; font-weight: bold; }
+        .stat-correct { color: var(--success); }
+        .stat-error { color: var(--danger); }
+
+        /* FOOTER */
+        .main-footer { background: #081326; color: white; padding: 4rem 0 2rem 0; }
+        .main-footer h2 { font-family: var(--font-heading); color: var(--gold-bright); margin-bottom: 1rem; }
+        .footer-credits { margin-top: 2rem; font-size: 0.9rem; opacity: 0.5; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+
+        /* ANIMACIONES */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .rosco-layout { flex-direction: column; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .options-grid { grid-template-columns: 1fr; }
+            .navbar { padding: 1rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-logo"><i class="fas fa-university"></i> Academia de Atenas</div>
+        <ul class="nav-links">
+            <li><a href="#genially">Presentación</a></li>
+            <li><a href="#teoria">El Panteón</a></li>
+            <li><a href="#flashcards">Memoria</a></li>
+            <li><a href="#trivial">Oráculo</a></li>
+            <li><a href="#pasapalabra">El Rosco</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero" id="inicio">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>DOMINA EL ALFABETO GRIEGO</h1>
+            <p class="hero-subtitle">El lenguaje de Homero, de la ciencia moderna y de los dioses. Desbloquea el código de la cuna de la civilización y pon a prueba tu sabiduría.</p>
+            <div>
+                <a href="#teoria" class="btn btn-gold"><i class="fas fa-scroll"></i> Estudiar los Textos</a>
+                <a href="#trivial" class="btn btn-outline"><i class="fas fa-bolt"></i> Iniciar Pruebas</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- GENIALLY INTEGRATION -->
+    <section id="genially" class="section-light">
+        <div class="container">
+            <h2 class="section-title">La Guía Interactiva</h2>
+            <p class="section-desc">Explora la presentación visual para introducirte en el mundo helénico antes de comenzar las pruebas.</p>
+            <div class="iframe-container">
+                <iframe title="Dominando el Alfabeto Griego: Guía Esencial" frameborder="0" src="https://view.genially.com/6aad5043728c64d45869ae64" type="text/html" allowscriptaccess="always" allowfullscreen="true" scrolling="yes" allownetworking="all"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEORÍA: EL PANTEÓN -->
+    <section id="teoria" class="section-dark">
+        <div class="container">
+            <h2 class="section-title">El Panteón de las Letras</h2>
+            <p class="section-desc">El inventario completo. Estudia la grafía, el nombre, la pronunciación clásica y el uso científico actual de cada letra.</p>
+            <div id="alphabet-grid" class="alphabet-grid">
+                <!-- Se inyecta vía JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FLASHCARDS -->
+    <section id="flashcards" class="section-light">
+        <div class="container">
+            <h2 class="section-title">Entrenamiento Espartano: Flashcards</h2>
+            <p class="section-desc">Haz clic en la tarjeta para voltearla. Intenta adivinar el nombre y sonido de la letra antes de ver la respuesta.</p>
+            <div class="flashcard-container">
+                <div class="flashcard" id="current-flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front" id="flashcard-front">?</div>
+                        <div class="flashcard-back" id="flashcard-back">?</div>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button class="btn btn-blue" id="btn-prev-card"><i class="fas fa-arrow-left"></i> Anterior</button>
+                    <button class="btn btn-gold" id="btn-flip-card"><i class="fas fa-sync-alt"></i> Voltear</button>
+                    <button class="btn btn-blue" id="btn-next-card">Siguiente <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRIVIAL -->
+    <section id="trivial" class="section-dark">
+        <div class="container">
+            <h2 class="section-title">El Oráculo de Delfos</h2>
+            <p class="section-desc">Demuestra tu conocimiento en esta prueba de opción múltiple. Responde con certeza para ganar el favor de Atenea.</p>
+            
+            <div class="game-panel">
+                <div class="game-header">
+                    <div>Sabiduría: <span id="trivial-score">0</span></div>
+                    <div>Pregunta: <span id="trivial-progress">1</span></div>
+                </div>
+                <div class="question-container">
+                    <h3 id="trivial-q-text">Cargando...</h3>
+                </div>
+                <div id="trivial-options" class="options-grid">
+                    <!-- Botones inyectados vía JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PASAPALABRA -->
+    <section id="pasapalabra" class="section-light">
+        <div class="container">
+            <h2 class="section-title">El Rosco Olímpico</h2>
+            <p class="section-desc">La prueba final. Conceptos desde la A hasta la Z. Escribe la palabra exacta (no te preocupes por las tildes).</p>
+            
+            <div class="rosco-layout">
+                <!-- Círculo de letras -->
+                <div class="rosco-ring-container" id="rosco-ring">
+                    <!-- Letras inyectadas con JS -->
+                </div>
+                
+                <!-- Panel Central -->
+                <div class="rosco-interface">
+                    <div class="rosco-current-letter" id="rosco-active-letter">A</div>
+                    <p class="rosco-hint" id="rosco-hint-text">Cargando...</p>
+                    
+                    <div class="rosco-input-group" id="rosco-input-container">
+                        <input type="text" id="rosco-input" placeholder="Tu respuesta..." autocomplete="off">
+                    </div>
+                    
+                    <div class="rosco-actions" id="rosco-actions-container">
+                        <button id="rosco-btn-submit" class="btn btn-success"><i class="fas fa-check"></i> Enviar</button>
+                        <button id="rosco-btn-pass" class="btn btn-warning"><i class="fas fa-forward"></i> Pasapalabra</button>
+                    </div>
+                    
+                    <div class="rosco-stats">
+                        <span class="stat-correct"><i class="fas fa-check-circle"></i> <span id="rosco-corrects">0</span></span>
+                        <span class="stat-error"><i class="fas fa-times-circle"></i> <span id="rosco-errors">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container text-center">
+            <h2><i class="fas fa-landmark"></i> Academia de Atenas</h2>
+            <p>Proyecto interactivo diseñado para el dominio total del alfabeto griego, su historia y sus aplicaciones científicas.</p>
+            <p class="footer-credits">Creado para alcanzar la excelencia. Listo para GitHub.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           BASE DE DATOS 1: EL PANTEÓN (Alfabeto Griego Completo)
+           ========================================================================== */
+        const greekAlphabet = [
+            { upper: 'Α', lower: 'α', name: 'Alfa', sound: 'a', desc: 'Primera letra. En ciencia representa la aceleración angular, partículas radioactivas y el inicio de todo.' },
+            { upper: 'Β', lower: 'β', name: 'Beta', sound: 'b/v', desc: 'Segunda letra. En física representa las partículas beta; en software denota versiones de prueba.' },
+            { upper: 'Γ', lower: 'γ', name: 'Gamma', sound: 'g', desc: 'Rayos gamma en física nuclear y coeficiente de dilatación en termodinámica.' },
+            { upper: 'Δ', lower: 'δ', name: 'Delta', sound: 'd', desc: 'La mayúscula (Δ) indica "cambio" o "diferencia" matemática. La minúscula indica funciones de Dirac.' },
+            { upper: 'Ε', lower: 'ε', name: 'Épsilon', sound: 'e (breve)', desc: 'En cálculo, representa una cantidad infinitesimalmente pequeña mayor que cero.' },
+            { upper: 'Ζ', lower: 'ζ', name: 'Zeta', sound: 'ds/z', desc: 'Famosa por la función zeta de Riemann, uno de los grandes problemas matemáticos del milenio.' },
+            { upper: 'Η', lower: 'η', name: 'Eta', sound: 'e (larga)/i', desc: 'En física, representa el rendimiento termodinámico o la viscosidad de un fluido.' },
+            { upper: 'Θ', lower: 'θ', name: 'Theta', sound: 'z (como think)', desc: 'Símbolo universal en trigonometría para representar los ángulos de las figuras geométricas.' },
+            { upper: 'Ι', lower: 'ι', name: 'Iota', sound: 'i', desc: 'La letra más pequeña. Origen de la expresión "no ceder ni un ápice (ni una iota)".' },
+            { upper: 'Κ', lower: 'κ', name: 'Kappa', sound: 'k', desc: 'En física, representa la constante elástica de un resorte o la curvatura de un espacio.' },
+            { upper: 'Λ', lower: 'λ', name: 'Lambda', sound: 'l', desc: 'Longitud de onda en física; símbolo iconográfico pintado en los escudos de los espartanos.' },
+            { upper: 'Μ', lower: 'μ', name: 'Mi (Mu)', sound: 'm', desc: 'Símbolo del prefijo "micro" (una millonésima parte) y del coeficiente de fricción.' },
+            { upper: 'Ν', lower: 'ν', name: 'Ni (Nu)', sound: 'n', desc: 'Representa la frecuencia de una onda en física y cinemática electromagnética.' },
+            { upper: 'Ξ', lower: 'ξ', name: 'Xi', sound: 'ks/x', desc: 'Letra compleja de trazar. Utilizada en termodinámica para el avance de una reacción química.' },
+            { upper: 'Ο', lower: 'ο', name: 'Ómicron', sound: 'o (breve)', desc: 'Literalmente "o pequeña". Apenas se usa en matemáticas por su evidente parecido con el número cero.' },
+            { upper: 'Π', lower: 'π', name: 'Pi', sound: 'p', desc: 'Constante (3.14159...). Relaciona el perímetro de una circunferencia con su diámetro.' },
+            { upper: 'Ρ', lower: 'ρ', name: 'Ro', sound: 'r', desc: 'Parecida a la P latina pero equivale a la R. En física representa la densidad de un material.' },
+            { upper: 'Σ', lower: 'σ, ς', name: 'Sigma', sound: 's', desc: 'La mayúscula (Σ) es el símbolo de sumatoria. Tiene una forma especial (ς) si va a final de palabra.' },
+            { upper: 'Τ', lower: 'τ', name: 'Tau', sound: 't', desc: 'Representa el torque (momento de fuerza) en mecánica y la constante de tiempo en circuitos.' },
+            { upper: 'Υ', lower: 'υ', name: 'Ípsilon', sound: 'u/ü', desc: 'Origen de las letras latinas Y, U, V y W. En física de partículas representa el mesón ípsilon.' },
+            { upper: 'Φ', lower: 'φ', name: 'Fi', sound: 'f', desc: 'Símbolo del número áureo (1.618...), la proporción perfecta presente en arte, arquitectura y naturaleza.' },
+            { upper: 'Χ', lower: 'χ', name: 'Ji (Chi)', sound: 'j', desc: 'Distribución chi-cuadrado en estadística; base del monograma cristiano inicial (Chi-Ro).' },
+            { upper: 'Ψ', lower: 'ψ', name: 'Psi', sound: 'ps', desc: 'Símbolo universal de la Psicología, la Psiquiatría y de la función de onda en mecánica cuántica.' },
+            { upper: 'Ω', lower: 'ω', name: 'Omega', sound: 'o (larga)', desc: 'Literalmente "o grande". El final absoluto, y unidad de resistencia eléctrica (Ohmios).' }
+        ];
+
+        /* ==========================================================================
+           BASE DE DATOS 2: TRIVIAL (Ampliada para conocimiento profundo)
+           ========================================================================== */
+        const trivialQuestions = [
+            { q: "¿Qué letra griega tiene una forma especial (ς) que solo se usa a final de palabra?", options: ["Sigma", "Épsilon", "Gamma", "Ro"], answer: 0 },
+            { q: "¿Qué letra es el símbolo de la proporción áurea en el arte y la naturaleza?", options: ["Pi", "Fi (Φ)", "Delta", "Omega"], answer: 1 },
+            { q: "La palabra 'Alfabeto' nace de...", options: ["Un dios griego", "Las letras Alfa y Beta", "El latín antiguo", "Atenas"], answer: 1 },
+            { q: "En matemáticas, una letra mayúscula se usa para denotar una sumatoria. ¿Cuál?", options: ["Omega (Ω)", "Delta (Δ)", "Sigma (Σ)", "Pi (Π)"], answer: 2 },
+            { q: "¿Qué letra griega evolucionó fonéticamente por el 'itacismo' para sonar como /i/ en la actualidad?", options: ["Ómicron", "Alfa", "Eta (η)", "Tau"], answer: 2 },
+            { q: "¿Cuál de estas vocales significa literalmente 'O grande'?", options: ["Ómicron", "Omega", "Épsilon", "Ípsilon"], answer: 1 },
+            { q: "Es el símbolo universal de la Psicología y la función de onda cuántica:", options: ["Psi (Ψ)", "Fi (Φ)", "Xi (Ξ)", "Chi (Χ)"], answer: 0 },
+            { q: "Representa el prefijo 'micro' en el Sistema Internacional (10^-6):", options: ["Mi (μ)", "Ni (ν)", "Lambda (λ)", "Kappa (κ)"], answer: 0 },
+            { q: "¿Qué letra adornaba los imponentes escudos de los guerreros de Esparta?", options: ["Lambda (Λ)", "Sigma (Σ)", "Pi (Π)", "Épsilon (Ε)"], answer: 0 },
+            { q: "¿Cuál es el equivalente griego de nuestra letra 'R' latina (aunque se escriba como P)?", options: ["Ro (ρ)", "Pi (π)", "Gamma (γ)", "Tau (τ)"], answer: 0 },
+            { q: "Los griegos introdujeron una innovación fonética revolucionaria respecto al alfabeto fenicio. ¿Cuál?", options: ["Puntuación", "Vocales verdaderas", "Mayúsculas", "Tildes"], answer: 1 },
+            { q: "¿Qué letra representa una variación matemática o incremento?", options: ["Delta (Δ)", "Beta (Β)", "Alfa (Α)", "Zeta (Ζ)"], answer: 0 },
+            { q: "El monograma cristiano primitivo se formaba entrelazando la letra Ro y la letra...", options: ["Alfa", "Omega", "Ji (Χ)", "Tau"], answer: 2 },
+            { q: "¿Qué vocal significa literalmente 'E simple'?", options: ["Épsilon", "Eta", "Alfa", "Ípsilon"], answer: 0 },
+            { q: "En geometría, ¿qué letra suele usarse para designar ángulos?", options: ["Theta (θ)", "Kappa (κ)", "Xi (ξ)", "Ni (ν)"], answer: 0 },
+            { q: "¿Qué letra es la base gráfica de nuestra letra latina Y?", options: ["Gamma", "Ípsilon", "Psi", "Lambda"], answer: 1 },
+            { q: "Expresión 'No me moveré ni una...'", options: ["Iota", "Alfa", "Beta", "Sigma"], answer: 0 },
+            { q: "Valor de Pi aproximado:", options: ["1.618", "2.718", "3.1415", "9.81"], answer: 2 },
+            { q: "Letra que en física nuclear designa una radiación de alta energía y penetración:", options: ["Alfa", "Beta", "Gamma", "Delta"], answer: 2 },
+            { q: "¿Cuántas letras tiene el alfabeto griego clásico?", options: ["24", "26", "22", "28"], answer: 0 }
+        ];
+
+        /* ==========================================================================
+           BASE DE DATOS 3: PASAPALABRA (A - Z, adaptado al contexto griego)
+           ========================================================================== */
+        const roscoQuestions = [
+            { letter: 'A', answer: 'alfa', hint: 'Empieza por A: Primera letra del alfabeto griego y símbolo del inicio.' },
+            { letter: 'B', answer: 'beta', hint: 'Empieza por B: Segunda letra del alfabeto, se usa para versiones de prueba en software.' },
+            { letter: 'C', answer: 'chi', hint: 'Empieza por C (transcripción): Letra griega (Χ) usada en estadística para la distribución chi-cuadrado.' },
+            { letter: 'D', answer: 'delta', hint: 'Empieza por D: Letra cuya mayúscula es un triángulo (Δ) y significa diferencia o cambio.' },
+            { letter: 'E', answer: 'epsilon', hint: 'Empieza por E: Letra que significa literalmente "e simple".' },
+            { letter: 'F', answer: 'fi', hint: 'Empieza por F: Letra (Φ) que representa la divina proporción o número áureo.' },
+            { letter: 'G', answer: 'gamma', hint: 'Empieza por G: Tercera letra, da nombre a los rayos más penetrantes de la física nuclear.' },
+            { letter: 'H', answer: 'homero', hint: 'Empieza por H: Poeta griego antiguo al que se le atribuye la Ilíada y la Odisea, escritas en este alfabeto.' },
+            { letter: 'I', answer: 'iota', hint: 'Empieza por I: La letra más pequeña, sinónimo de cantidad ínfima.' },
+            { letter: 'K', answer: 'kappa', hint: 'Empieza por K: Décima letra del alfabeto, antecesora de la K latina.' },
+            { letter: 'L', answer: 'lambda', hint: 'Empieza por L: Letra (Λ) pintada en los escudos de los hoplitas espartanos.' },
+            { letter: 'M', answer: 'mu', hint: 'Empieza por M: Letra (μ) que representa el prefijo "micro" en medidas.' },
+            { letter: 'N', answer: 'nu', hint: 'Empieza por N: Letra (ν) que en física representa la frecuencia.' },
+            { letter: 'O', answer: 'omega', hint: 'Empieza por O: Última letra del alfabeto, símbolo del final.' },
+            { letter: 'P', answer: 'pi', hint: 'Empieza por P: Letra más famosa de las matemáticas, constante del círculo.' },
+            { letter: 'R', answer: 'ro', hint: 'Empieza por R: Letra (ρ) que se escribe como una P pero suena como una R.' },
+            { letter: 'S', answer: 'sigma', hint: 'Empieza por S: Única letra que tiene una grafía distinta si va a final de palabra (ς).' },
+            { letter: 'T', answer: 'tau', hint: 'Empieza por T: Letra que en mecánica representa el torque.' },
+            { letter: 'U', answer: 'upsilon', hint: 'Empieza por U (transcripción): Letra (Υ) origen de nuestra U, V e Y.' },
+            { letter: 'X', answer: 'xi', hint: 'Empieza por X: Letra griega (Ξ) con un sonido de consonante doble ks.' },
+            { letter: 'Y', answer: 'ypsilon', hint: 'Empieza por Y: Nombre hispanizado de la letra Υ.' },
+            { letter: 'Z', answer: 'zeta', hint: 'Empieza por Z: Sexta letra, de donde deriva la Z del abecedario.' }
+        ];
+
+        /* ==========================================================================
+           CONTROLADORES Y LÓGICA DE LA SPA
+           ========================================================================== */
+        class AcademiaController {
+            constructor() {
+                this.initTeoria();
+                this.initFlashcards();
+                this.initTrivial();
+                this.initPasapalabra();
+            }
+
+            // --------------------------------------------------------
+            // MÓDULO 1: TEORÍA (Inyección dinámica)
+            // --------------------------------------------------------
+            initTeoria() {
+                const grid = document.getElementById('alphabet-grid');
+                greekAlphabet.forEach(l => {
+                    const card = document.createElement('div');
+                    card.className = 'alpha-card';
+                    card.innerHTML = `
+                        <div class="alpha-symbol">${l.upper} ${l.lower}</div>
+                        <div class="alpha-name">${l.name} <span style="text-transform:lowercase; font-weight:normal; color: var(--gold-primary);">(/${l.sound}/)</span></div>
+                        <div class="alpha-detail">${l.desc}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            // --------------------------------------------------------
+            // MÓDULO 2: FLASHCARDS (Lógica 3D y Navegación)
+            // --------------------------------------------------------
+            initFlashcards() {
+                this.fcIndex = 0;
+                this.fcElement = document.getElementById('current-flashcard');
+                this.fcFront = document.getElementById('flashcard-front');
+                this.fcBack = document.getElementById('flashcard-back');
+                
+                document.getElementById('btn-flip-card').addEventListener('click', () => {
+                    this.fcElement.classList.toggle('flipped');
+                });
+                
+                document.getElementById('btn-next-card').addEventListener('click', () => {
+                    this.fcElement.classList.remove('flipped');
+                    setTimeout(() => {
+                        this.fcIndex = (this.fcIndex + 1) % greekAlphabet.length;
+                        this.updateFlashcard();
+                    }, 300);
+                });
+
+                document.getElementById('btn-prev-card').addEventListener('click', () => {
+                    this.fcElement.classList.remove('flipped');
+                    setTimeout(() => {
+                        this.fcIndex = (this.fcIndex - 1 + greekAlphabet.length) % greekAlphabet.length;
+                        this.updateFlashcard();
+                    }, 300);
+                });
+
+                this.updateFlashcard();
+            }
+
+            updateFlashcard() {
+                const data = greekAlphabet[this.fcIndex];
+                this.fcFront.innerHTML = `${data.upper} ${data.lower}`;
+                this.fcBack.innerHTML = `${data.name}<p style="color: var(--gold-bright);">Sonido: /${data.sound}/</p><p style="font-size: 0.9rem; margin-top: 15px;">${data.desc}</p>`;
+            }
+
+            // --------------------------------------------------------
+            // MÓDULO 3: TRIVIAL (Gestión de estado y puntuación)
+            // --------------------------------------------------------
+            initTrivial() {
+                this.tScore = 0;
+                this.tIndex = 0;
+                // Clonar y barajar preguntas para que sea distinto cada vez
+                this.tQuestions = [...trivialQuestions].sort(() => Math.random() - 0.5);
+                
+                this.tQText = document.getElementById('trivial-q-text');
+                this.tOptions = document.getElementById('trivial-options');
+                this.tScoreEl = document.getElementById('trivial-score');
+                this.tProgressEl = document.getElementById('trivial-progress');
+                
+                this.loadTrivialQuestion();
+            }
+
+            loadTrivialQuestion() {
+                if (this.tIndex >= this.tQuestions.length) {
+                    this.tQText.innerHTML = `¡Oráculo Completado!<br>Has obtenido ${this.tScore} puntos de sabiduría.`;
+                    this.tOptions.innerHTML = `<button class="btn btn-gold" style="grid-column: 1/-1" onclick="document.getElementById('trivial').scrollIntoView(); location.reload()">Renacer y volver a intentar</button>`;
+                    this.tProgressEl.textContent = "Finalizado";
+                    return;
+                }
+
+                const q = this.tQuestions[this.tIndex];
+                this.tProgressEl.textContent = `${this.tIndex + 1} / ${this.tQuestions.length}`;
+                this.tQText.textContent = q.q;
+                this.tOptions.innerHTML = '';
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = opt;
+                    btn.onclick = () => this.checkTrivialAnswer(idx, q.answer, btn);
+                    this.tOptions.appendChild(btn);
+                });
+            }
+
+            checkTrivialAnswer(selected, correct, btn) {
+                const buttons = this.tOptions.querySelectorAll('.opt-btn');
+                buttons.forEach(b => b.disabled = true);
+
+                if (selected === correct) {
+                    btn.classList.add('correct');
+                    this.tScore += 100;
+                    this.tScoreEl.textContent = this.tScore;
+                } else {
+                    btn.classList.add('wrong');
+                    buttons[correct].classList.add('correct');
+                }
+
+                setTimeout(() => {
+                    this.tIndex++;
+                    this.loadTrivialQuestion();
+                }, 2000);
+            }
+
+            // --------------------------------------------------------
+            // MÓDULO 4: PASAPALABRA (Matemáticas trigonométricas)
+            // --------------------------------------------------------
+            initPasapalabra() {
+                // Preparamos los datos con el estado inicial
+                this.rData = roscoQuestions.map(q => ({ ...q, status: 'pending' }));
+                this.rIndex = 0;
+                this.rCorrects = 0;
+                this.rErrors = 0;
+                
+                this.renderRoscoRing();
+                
+                // Eventos de botones e input
+                document.getElementById('rosco-btn-submit').addEventListener('click', () => this.checkRosco());
+                document.getElementById('rosco-btn-pass').addEventListener('click', () => this.passRosco());
+                document.getElementById('rosco-input').addEventListener('keypress', e => {
+                    if (e.key === 'Enter') this.checkRosco();
+                });
+
+                this.loadRoscoTurn();
+            }
+
+            // Dibuja las letras en un círculo perfecto usando Seno y Coseno
+            renderRoscoRing() {
+                const container = document.getElementById('rosco-ring');
+                container.innerHTML = '';
+                const radius = 210; 
+                const total = this.rData.length;
+                const center = 225; // Mitad del contenedor de 450px
+
+                this.rData.forEach((item, index) => {
+                    // Ángulo: Desplazado -PI/2 para que empiece arriba en las 12 en punto
+                    const angle = (index / total) * (2 * Math.PI) - (Math.PI / 2);
+                    const x = center + radius * Math.cos(angle);
+                    const y = center + radius * Math.sin(angle);
+
+                    const el = document.createElement('div');
+                    el.className = 'rosco-letter';
+                    el.id = `rosco-l-${index}`;
+                    el.textContent = item.letter;
+                    el.style.left = `${x}px`;
+                    el.style.top = `${y}px`;
+                    
+                    container.appendChild(el);
+                });
+            }
+
+            loadRoscoTurn() {
+                let found = false;
+                let start = this.rIndex;
+                
+                // Busca la siguiente letra que esté 'pending'
+                do {
+                    if (this.rData[this.rIndex].status === 'pending') {
+                        found = true;
+                        break;
+                    }
+                    this.rIndex = (this.rIndex + 1) % this.rData.length;
+                } while (this.rIndex !== start);
+
+                // Si no hay letras pendientes, el juego acaba
+                if (!found) {
+                    this.endRosco();
+                    return;
+                }
+
+                // UI Reset
+                document.querySelectorAll('.rosco-letter').forEach(el => el.classList.remove('active'));
+                document.getElementById(`rosco-l-${this.rIndex}`).classList.add('active');
+                
+                const current = this.rData[this.rIndex];
+                document.getElementById('rosco-active-letter').textContent = current.letter;
+                document.getElementById('rosco-hint-text').textContent = current.hint;
+                
+                const input = document.getElementById('rosco-input');
+                input.value = '';
+                input.focus();
+            }
+
+            // Normalizador para ignorar tildes, mayúsculas y espacios
+            normalizeString(str) {
+                return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            }
+
+            checkRosco() {
+                const input = document.getElementById('rosco-input');
+                const userAns = this.normalizeString(input.value);
+                if (!userAns) return; // No enviar si está vacío
+
+                const correctAns = this.normalizeString(this.rData[this.rIndex].answer);
+                const letterEl = document.getElementById(`rosco-l-${this.rIndex}`);
+
+                if (userAns === correctAns) {
+                    this.rData[this.rIndex].status = 'correct';
+                    letterEl.classList.add('correct');
+                    this.rCorrects++;
+                    document.getElementById('rosco-corrects').textContent = this.rCorrects;
+                } else {
+                    this.rData[this.rIndex].status = 'wrong';
+                    letterEl.classList.add('wrong');
+                    this.rErrors++;
+                    document.getElementById('rosco-errors').textContent = this.rErrors;
+                }
+
+                // Pasar al siguiente
+                this.rIndex = (this.rIndex + 1) % this.rData.length;
+                this.loadRoscoTurn();
+            }
+
+            passRosco() {
+                // Solo salta de índice, el estado sigue siendo 'pending'
+                this.rIndex = (this.rIndex + 1) % this.rData.length;
+                this.loadRoscoTurn();
+            }
+
+            endRosco() {
+                document.querySelectorAll('.rosco-letter').forEach(el => el.classList.remove('active'));
+                document.getElementById('rosco-active-letter').textContent = "FIN";
+                
+                let feedback = "";
+                if (this.rCorrects === this.rData.length) feedback = "¡PERFECCIÓN OLÍMPICA! Zeus está orgulloso.";
+                else if (this.rCorrects >= this.rData.length / 2) feedback = "¡Buen trabajo! Eres un digno estudiante de Atenas.";
+                else feedback = "Debes volver a la academia. Repasa el panteón.";
+
+                document.getElementById('rosco-hint-text').innerHTML = `
+                    <strong>Aciertos: ${this.rCorrects}</strong> | <strong>Errores: ${this.rErrors}</strong><br><br>
+                    <span style="color: var(--gold-primary); font-weight: bold;">${feedback}</span>
+                `;
+                
+                // Ocultar controles
+                document.getElementById('rosco-input-container').classList.add('hidden');
+                document.getElementById('rosco-actions-container').classList.add('hidden');
+            }
+        }
+
+        // --------------------------------------------------------
+        // INICIADOR GLOBAL
+        // --------------------------------------------------------
+        window.addEventListener('DOMContentLoaded', () => {
+            new AcademiaController();
+        });
+    </script>
+</body>
+</html>
